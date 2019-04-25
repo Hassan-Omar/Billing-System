@@ -1,8 +1,7 @@
-package com.ho.cm.bao;
+package com.ho.cm.dao;
 
 
-public interface UserBao {
-
+public interface UserDao {
     // check if the password is true 
     public boolean passwordChecke (String pass);
     

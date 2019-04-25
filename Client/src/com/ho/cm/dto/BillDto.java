@@ -1,14 +1,22 @@
 package com.ho.cm.dto;
 
+import java.util.Date;
+import java.util.List;
+
 
 public class BillDto {
-   private String itemName , customerName ;
-   private int numberofItemes;
-   private float pricePerItem ;
+    private String customerName, customerPhone;
+    private Date billDate;
+    private List<BillRowsDto> billRows;
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
     }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
@@ -18,23 +26,20 @@ public class BillDto {
         return customerName;
     }
 
-    public String getItemName() {
-        return itemName;
+    public void setBillDate(Date billDate) {
+        this.billDate = billDate;
     }
 
-    public void setNumberofItemes(int numberofItemes) {
-        this.numberofItemes = numberofItemes;
+    public Date getBillDate() {
+        return billDate;
     }
 
-    public int getNumberofItemes() {
-        return numberofItemes;
+    public void setBillRows(List<BillRowsDto> billRows) {
+        this.billRows = billRows;
     }
 
-    public void setPricePerItem(float pricePerItem) {
-        this.pricePerItem = pricePerItem;
+    public List<BillRowsDto> getBillRows() {
+        return billRows;
     }
 
-    public float getPricePerItem() {
-        return pricePerItem;
-    }
 }

@@ -1,6 +1,11 @@
 
 package com.ho.cm.ui;
 
+import com.ho.cm.bao.BaoFactory;
+import com.ho.cm.bao.BillBao;
+
+import javax.swing.JFrame;
+
 /**
  *
  * @author h.omar
@@ -45,6 +50,7 @@ public class BillPanel extends javax.swing.JPanel {
                 "Customer Name", "Bill Date", "Total Price", "Total Item"
             }
         ));
+        billTable.setRowHeight(23);
         jScrollPane1.setViewportView(billTable);
         billTable.getColumnModel().getColumn(0).setHeaderValue("Customer Name");
         billTable.getColumnModel().getColumn(1).setHeaderValue("Bill Date");
@@ -97,9 +103,19 @@ public class BillPanel extends javax.swing.JPanel {
 
         deleteBtn.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         deleteBtn.setText("Delete");
+        deleteBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteBtnMouseClicked(evt);
+            }
+        });
 
         insertnewBill.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         insertnewBill.setText("New Bill");
+        insertnewBill.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                insertnewBillMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -108,20 +124,20 @@ public class BillPanel extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(viewBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addGap(125, 125, 125)
                 .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(96, 96, 96)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
                 .addComponent(insertnewBill, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(117, 117, 117))
+                .addGap(34, 34, 34))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(49, Short.MAX_VALUE)
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(insertnewBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(insertnewBill, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
                     .addComponent(deleteBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(viewBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE))
+                    .addComponent(viewBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(42, 42, 42))
         );
 
@@ -135,7 +151,7 @@ public class BillPanel extends javax.swing.JPanel {
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addContainerGap(127, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,6 +166,19 @@ public class BillPanel extends javax.swing.JPanel {
         );
     }//GEN-END:initComponents
 
+    private void insertnewBillMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_insertnewBillMouseClicked
+       
+        viewPopupScreen();
+       
+    }//GEN-LAST:event_insertnewBillMouseClicked
+
+    private void deleteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteBtnMouseClicked
+BillBao bill = new BaoFactory().createBillContentBao() ;
+int bill_id  =Integer.parseInt(billTable.getValueAt(billTable.getSelectedRow(),0).toString()); //get selected id of bill 
+bill.deletebill(bill_id);// pass id to delete
+
+    }//GEN-LAST:event_deleteBtnMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable billTable;
@@ -163,5 +192,17 @@ public class BillPanel extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton viewBtn;
     // End of variables declaration//GEN-END:variables
-
+  
+    void viewPopupScreen(){
+    JFrame poupInsert = new JFrame();
+   // poupInsert.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    poupInsert.setContentPane(new InsertNewBill());
+    poupInsert.setSize(800, 900); // setting size
+    poupInsert.setVisible(true);
 }
+    
+    
+    
+    
+    
+    }

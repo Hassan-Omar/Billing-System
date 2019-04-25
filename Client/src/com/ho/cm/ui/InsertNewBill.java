@@ -1,9 +1,13 @@
 
 package com.ho.cm.ui;
 
+import com.ho.cm.bao.BaoFactory;
+import com.ho.cm.bao.BillBao;
 import com.ho.cm.dto.BillDto;
+import com.ho.cm.dto.BillRowsDto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -14,7 +18,10 @@ import javax.swing.JOptionPane;
  */
 public class InsertNewBill extends javax.swing.JPanel {
 
-    /** Creates new form InsertNewBill */
+ /** Creates new form InsertNewBill */
+    BillBao BillContentBaoObject = new BaoFactory().createBillContentBao();
+
+
     public InsertNewBill() {
         initComponents();
     }
@@ -29,12 +36,14 @@ public class InsertNewBill extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        customename = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
+        customeName = new javax.swing.JTextField();
+        customerPhone = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        phoneErrorLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         billContTable = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         totalLabel = new javax.swing.JLabel();
         saveBtn = new javax.swing.JButton();
@@ -42,15 +51,17 @@ public class InsertNewBill extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Customer Name");
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+        customerPhone.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        customerPhone.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                customerPhoneKeyTyped(evt);
             }
         });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("Phone ");
+
+        phoneErrorLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -63,9 +74,11 @@ public class InsertNewBill extends javax.swing.JPanel {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
-                    .addComponent(customename))
-                .addGap(28, 28, 28))
+                    .addComponent(customerPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+                    .addComponent(customeName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(phoneErrorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -73,11 +86,12 @@ public class InsertNewBill extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(customename, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(customeName, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(customerPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(phoneErrorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
@@ -102,20 +116,28 @@ public class InsertNewBill extends javax.swing.JPanel {
         billContTable.getColumnModel().getColumn(2).setHeaderValue("Price per Item");
         billContTable.getColumnModel().getColumn(3).setHeaderValue("Total");
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jButton1.setText("+");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 807, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -157,18 +179,20 @@ public class InsertNewBill extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(100, 100, 100)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(27, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -176,25 +200,43 @@ public class InsertNewBill extends javax.swing.JPanel {
         );
     }//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void saveBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveBtnMouseClicked
-       System.out.print(billContTable.getRowCount());
+                                            
+  BillDto bill = new BillDto () ; 
+        
+  //  read the bill content and pass it 
+  bill.setBillDate(new Date(System.currentTimeMillis()) ); // passing current time 
+  bill.setCustomerPhone(customerPhone.getText()); // passing customer phone 
+  bill.setCustomerName(customeName.getText()); // passing customer full name 
+  bill.setBillRows(billContTableRead()); // passing  table data
+  
+  BillContentBaoObject.saveBillRows(bill);
+
     }//GEN-LAST:event_saveBtnMouseClicked
+
+    private void customerPhoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_customerPhoneKeyTyped
+      
+      if(customerPhone.getText().toLowerCase().contentEquals("qwertyuioplkjhgfdsazxcvbnm-+/.';[]}{>?<:|~!@#%^*()"))
+      {phoneErrorLabel.setText("this cant be a number Ex-->01123");
+      }
+      else
+      phoneErrorLabel.setText("");
+      
+    }//GEN-LAST:event_customerPhoneKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable billContTable;
-    private javax.swing.JTextField customename;
+    private javax.swing.JTextField customeName;
+    private javax.swing.JTextField customerPhone;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel phoneErrorLabel;
     private javax.swing.JButton saveBtn;
     private javax.swing.JLabel totalLabel;
     // End of variables declaration//GEN-END:variables
@@ -211,22 +253,22 @@ public class InsertNewBill extends javax.swing.JPanel {
 
 
 
-    public List<BillDto>  billContTableRead() {
-     List<BillDto>  bills  = new ArrayList<> () ;
+    public List<BillRowsDto>  billContTableRead() {
+     List<BillRowsDto>  billRows  = new ArrayList<> () ;
         try {
         
                 for (int i = 0; i <billContTable.getRowCount() ; i++) {
-                BillDto bill = new BillDto() ;    
-                bill.setItemName( billContTable.getValueAt(billContTable.getSelectedRow(), 0).toString()); // get col 1 as string 
-                bill.setNumberofItemes(Integer.parseInt(billContTable.getValueAt(billContTable.getSelectedRow(), 1).toString()  )); // pass col 2 as integer value
-                bill.setPricePerItem( Float.parseFloat(billContTable.getValueAt(billContTable.getSelectedRow(), 2).toString() ) ); // pass col 3 as float
-                bills.add(bill);
+                BillRowsDto billRow = new BillRowsDto() ;    
+                billRow.setItemName( billContTable.getValueAt(billContTable.getSelectedRow(), 0).toString()); // get col 1 as string 
+                billRow.setNumberofItemes(Integer.parseInt(billContTable.getValueAt(billContTable.getSelectedRow(), 1).toString()  )); // pass col 2 as integer value
+                billRow.setPricePerItem( Float.parseFloat(billContTable.getValueAt(billContTable.getSelectedRow(), 2).toString() ) ); // pass col 3 as float
+                billRows.add(billRow);
                     
                     }}catch (Exception e ) {
             JOptionPane.showConfirmDialog(this , "Your Input not proper Please Edite it ");
             
             }
-          return bills ;  }        
+          return billRows ;  }        
 
        
      }

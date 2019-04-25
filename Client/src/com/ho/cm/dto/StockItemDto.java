@@ -1,7 +1,7 @@
 package com.ho.cm.dto;
 
 
-public class StockItem {
+public class StockItemDto {
    private int currentNumber , id ;
 
     public void setCurrentNumber(int currentNumber) {
