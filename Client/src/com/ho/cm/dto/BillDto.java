@@ -7,6 +7,15 @@ import java.util.List;
 public class BillDto {
     private String customerName, customerPhone;
     private Date billDate;
+    private int billID;
+
+    public void setBillID(int billID) {
+        this.billID = billID;
+    }
+
+    public int getBillID() {
+        return billID;
+    }
     private List<BillRowsDto> billRows;
 
     public void setCustomerPhone(String customerPhone) {

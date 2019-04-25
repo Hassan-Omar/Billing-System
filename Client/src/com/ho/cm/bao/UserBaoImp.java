@@ -4,7 +4,7 @@ import com.ho.cm.dao.DaoFactory;
 import com.ho.cm.dao.UserDao;
 
 public class UserBaoImp implements UserBao {
-    UserDao userDaoObj = new DaoFactory().createUserDao(); // create dao object 
+    UserDao userDaoObj = new DaoFactory().createUserDao(); // create dao object
     // only  we need to delegate all  methods in  Dao Object
 
     @Override
@@ -16,18 +16,18 @@ public class UserBaoImp implements UserBao {
     @Override
     public boolean userName(String username) {
 
-        return userDaoObj.userName(username);
+        return userDaoObj.usernameCheck(username);
     }
 
     @Override
-    public boolean updatePassword(int billId) {
+    public boolean updatePassword(String password) {
 
-        return userDaoObj.updatePassword(billId);
+        return userDaoObj.updatePassword(password);
     }
 
     @Override
-    public boolean updateUsername(int billId) {
+    public boolean updateUsername(String username) {
 
-        return userDaoObj.updateUsername(billId);
+        return userDaoObj.updateUsername(username);
     }
 }

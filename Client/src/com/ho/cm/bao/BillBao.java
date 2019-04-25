@@ -13,4 +13,7 @@ public interface BillBao {
     
     // delete a bill using it's id 
     public boolean deletebill (int billId) ; 
+    
+    // list All bills 
+    public List<BillDto> getAllBills();
 }

@@ -12,6 +12,8 @@ public interface BillDao {
     public List<BillDto> searchBill(String customerName);
     
     // delete a bill using it's id 
-    public boolean deletebill (int billId) ; 
+    public boolean deleteBill (int billId) ; 
     
+    // list All bills 
+    public List<BillDto> getAllBills();
 }

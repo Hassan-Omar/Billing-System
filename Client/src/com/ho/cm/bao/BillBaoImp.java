@@ -28,6 +28,12 @@ public class BillBaoImp implements BillBao {
     @Override
     public boolean deletebill(int billId) {
 
-        return billContentDaoObj.deletebill(billId);
+        return billContentDaoObj.deleteBill(billId);
+    }
+
+    @Override
+    public List<BillDto> getAllBills() {
+
+        return billContentDaoObj.getAllBills();
     }
 }
