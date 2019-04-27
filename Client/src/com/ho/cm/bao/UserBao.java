@@ -7,7 +7,7 @@ public interface UserBao {
     public boolean passwordChecke(String pass);
 
     // check if the userName is true
-    public boolean userName(String username);
+    public boolean usernameCheck(String username);
 
     // to update the password and this work only and if only is logged in
     public boolean updatePassword(String password);

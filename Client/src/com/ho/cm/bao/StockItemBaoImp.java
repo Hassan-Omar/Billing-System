@@ -11,6 +11,12 @@ public class StockItemBaoImp implements StockItemBao {
     StockItemDao stokItemDaoObj = new DaoFactory().createstockItemDao(); // create dao object 
     // only  we need to delegate all  methods in  Dao Object
     
+   
+    @Override
+    public  List<StockItemDto>  allItem() {
+        return stokItemDaoObj.getAllItems();
+    }
+    
     @Override
     public boolean saveStockItem(StockItemDto item) {
         return stokItemDaoObj.saveStockItem(item);

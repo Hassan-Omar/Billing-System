@@ -13,4 +13,14 @@ public interface StockItemDao {
     
     // delete a item using it's id 
     public boolean deleteItem (int itemlId) ; 
+    
+    //list all items 
+    public List<StockItemDto> getAllItems ();
+    
+    // update the item content like price and each available number 
+    public boolean updateStockItem(StockItemDto item);
+    
+    // this only to update current number 
+    public boolean decrementItemNum(StockItemDto item);
+    
 }

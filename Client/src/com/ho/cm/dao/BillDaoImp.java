@@ -36,12 +36,32 @@ public class BillDaoImp implements BillDao {
                             jdbc.setDate(3, new java.sql.Date(bill.getBillDate().getTime()));
                         else
                             jdbc.setNull(3, java.sql.Types.DATE);
+            
             jdbc.execute();
+            
+            
+            
+            
+            int billID = 0 ; // ?????
+            
+            for(int i=0 ; i<bill.getBillRows().size() ; i++)
+            {
+            jdbc.setUrl(ConnectionFactory.getUrl());
+            jdbc.setUsername(ConnectionFactory.getUsername());
+            jdbc.setPassword(ConnectionFactory.getPassword());
+            jdbc.setCommand(Queries.INSERT_BILL_CONTENT);
+            // get the current id 
+            
+            jdbc.setString(2,bill.getBillRows().get(i).toString()) ; // ITEM_NAME
+            jdbc.setInt(3,billID); // BILL_ID
+            
+            jdbc.execute();
+            }
             return true; 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+  
 
         return false;
     }
@@ -54,18 +74,21 @@ public class BillDaoImp implements BillDao {
             jdbc.setUrl(ConnectionFactory.getUrl());
             jdbc.setUsername(ConnectionFactory.getUsername());
             jdbc.setPassword(ConnectionFactory.getPassword());
-            jdbc.setString(1,customerName);
             jdbc.setCommand(Queries.SEARCH_BILL);
+            jdbc.setString(1,"%"+customerName.toLowerCase().trim()+"%");
+            
             jdbc.execute();
 
             while (jdbc.next()) {
                 if (bills == null)
-                    bills = new ArrayList<>();
+               bills = new ArrayList<>();
                 BillDto bill = new BillDto();
+                
                 bill.setBillID(jdbc.getInt(1));
-                bill.setCustomerName(jdbc.getNString(2));
-                bill.setCustomerPhone(jdbc.getNString(3));
-                bill.setBillDate(jdbc.getDate(4));
+                bill.setCustomerName(jdbc.getString(2));
+                bill.setCustomerPhone(jdbc.getString(3));
+                
+                //bill.setBillDate(jdbc.getDate(4));
                 bills.add(bill);
 
             }
@@ -107,9 +130,9 @@ public class BillDaoImp implements BillDao {
                 bills = new ArrayList<>();
                 BillDto bill = new BillDto();
                 bill.setBillID(jdbc.getInt(1));
-                bill.setCustomerName(jdbc.getNString(2));
-                bill.setCustomerPhone(jdbc.getNString(3));
-                bill.setBillDate(jdbc.getDate(4));
+                bill.setCustomerName(jdbc.getString(2));
+                bill.setCustomerPhone(jdbc.getString(3));
+               // bill.setBillDate(new java.sql.Date(jdbc.getDate(4).getTime()));
                 bills.add(bill);
 
             }

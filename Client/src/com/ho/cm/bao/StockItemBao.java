@@ -13,4 +13,8 @@ public interface StockItemBao {
 
     // delete a item using it's id
     public boolean deleteItem(int itemlId);
+    
+    // list  all itemes stored in our system 
+    public List<StockItemDto> allItem();
+    
 }

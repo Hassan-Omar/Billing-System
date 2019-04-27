@@ -3,18 +3,25 @@ package com.ho.cm.ui;
 
 import com.ho.cm.bao.BaoFactory;
 import com.ho.cm.bao.BillBao;
+import com.ho.cm.dto.BillDto;
+
+import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author h.omar
  */
 public class BillPanel extends javax.swing.JPanel {
+    BillBao bill = new BaoFactory().createBillBao();
 
     /** Creates new form BillPanel */
     public BillPanel() {
         initComponents();
+        if (bill.getAllBills() != null)
+            billTabllReset(bill.getAllBills());
     }
 
     /** This method is called from within the constructor to
@@ -29,12 +36,11 @@ public class BillPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         billTable = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        enteredName = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         viewBtn = new javax.swing.JButton();
         deleteBtn = new javax.swing.JButton();
-        insertnewBill = new javax.swing.JButton();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bills", 0, 0, new java.awt.Font("Adobe Arabic", 1, 24))); // NOI18N
 
@@ -47,15 +53,19 @@ public class BillPanel extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Customer Name", "Bill Date", "Total Price", "Total Item"
+                "Customer Name", "Customer Phone", "Bill Date", "Bill ID"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         billTable.setRowHeight(23);
         jScrollPane1.setViewportView(billTable);
-        billTable.getColumnModel().getColumn(0).setHeaderValue("Customer Name");
-        billTable.getColumnModel().getColumn(1).setHeaderValue("Bill Date");
-        billTable.getColumnModel().getColumn(2).setHeaderValue("Total Price");
-        billTable.getColumnModel().getColumn(3).setHeaderValue("Total Item");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -63,7 +73,7 @@ public class BillPanel extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -76,6 +86,11 @@ public class BillPanel extends javax.swing.JPanel {
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton1.setText("Search");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -83,7 +98,7 @@ public class BillPanel extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(enteredName, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34))
@@ -93,7 +108,7 @@ public class BillPanel extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(enteredName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
@@ -109,35 +124,24 @@ public class BillPanel extends javax.swing.JPanel {
             }
         });
 
-        insertnewBill.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        insertnewBill.setText("New Bill");
-        insertnewBill.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                insertnewBillMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addGap(161, 161, 161)
                 .addComponent(viewBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(125, 125, 125)
-                .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
-                .addComponent(insertnewBill, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(154, 154, 154))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(22, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(insertnewBill, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                    .addComponent(deleteBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(viewBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(viewBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42))
         );
 
@@ -166,43 +170,72 @@ public class BillPanel extends javax.swing.JPanel {
         );
     }//GEN-END:initComponents
 
-    private void insertnewBillMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_insertnewBillMouseClicked
-       
-        viewPopupScreen();
-       
-    }//GEN-LAST:event_insertnewBillMouseClicked
-
     private void deleteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteBtnMouseClicked
-BillBao bill = new BaoFactory().createBillContentBao() ;
-int bill_id  =Integer.parseInt(billTable.getValueAt(billTable.getSelectedRow(),0).toString()); //get selected id of bill 
-bill.deletebill(bill_id);// pass id to delete
 
+
+        int bill_id =
+            Integer.parseInt(billTable.getValueAt(billTable.getSelectedRow(), 3).toString()); //get selected id of bill
+        if (bill_id >= 0)
+        // if we come here so this a bill has been selected
+        {
+            if (bill.deletebill(bill_id)) // pass id to delete)
+            {
+                int msgRes =
+                    JOptionPane.showOptionDialog(null, "Deleted Successfully ", "Deleting a Bill ",
+                                                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+                                                 null, null);
+                if (msgRes == JOptionPane.OK_OPTION) {
+                    billTabllReset(bill.getAllBills());
+                }
+            } else
+                JOptionPane.showMessageDialog(this, "can't delete ");
+        } else
+            JOptionPane.showMessageDialog(this, "you should selecte bill to delete ");
     }//GEN-LAST:event_deleteBtnMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+      if (enteredName.getText()!= null )
+       billTabllReset(bill.searchBill(enteredName.getText()));
+      else 
+      JOptionPane.showMessageDialog(this , "Please Enter A Customer Name To Search");
+    }//GEN-LAST:event_jButton1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable billTable;
     private javax.swing.JButton deleteBtn;
-    private javax.swing.JButton insertnewBill;
+    private javax.swing.JTextField enteredName;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton viewBtn;
     // End of variables declaration//GEN-END:variables
   
-    void viewPopupScreen(){
-    JFrame poupInsert = new JFrame();
-   // poupInsert.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    poupInsert.setContentPane(new InsertNewBill());
-    poupInsert.setSize(800, 900); // setting size
-    poupInsert.setVisible(true);
-}
-    
-    
-    
-    
-    
+    void viewPopupScreen() {
+        JFrame poupInsert = new JFrame();
+        // poupInsert.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        poupInsert.setContentPane(new InsertNewBill());
+        poupInsert.setSize(800, 900); // setting size
+        poupInsert.setVisible(true);
     }
+
+    // this method to set billTable content as same as the stored in data base
+    void billTabllReset(List<BillDto> bills) {
+        Object[][] billArr = new Object[bills.size()][4];
+
+        for (int i = 0; i < bills.size(); i++) {
+            billArr[i][0] = bills.get(i).getCustomerName();
+            billArr[i][1] = bills.get(i).getCustomerPhone();
+            //date not set
+            billArr[i][3] = bills.get(i).getBillID();
+        }
+        billTable.setModel(new javax.swing.table.DefaultTableModel(billArr, new String[] {
+                                                                   "Customer Name", "Customer Phone", "Bill Date",
+                                                                   "Bill ID"
+            }));
+    }
+
+
+}

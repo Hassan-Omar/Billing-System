@@ -39,6 +39,8 @@ public class MMenu extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu5 = new javax.swing.JMenu();
         userQuickSearch = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
         logout = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -54,7 +56,7 @@ public class MMenu extends javax.swing.JFrame {
             .addGap(0, 758, Short.MAX_VALUE)
         );
 
-        jMenu5.setText("Insert New Bill                     ");
+        jMenu5.setText("Insert New Bill                ");
         jMenu5.setActionCommand("Insert New   ");
         jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -63,7 +65,7 @@ public class MMenu extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu5);
 
-        userQuickSearch.setText("View All");
+        userQuickSearch.setText("                Bills  Managment                ");
         userQuickSearch.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         userQuickSearch.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -72,7 +74,13 @@ public class MMenu extends javax.swing.JFrame {
         });
         jMenuBar1.add(userQuickSearch);
 
-        logout.setText("                                                     Log Out");
+        jMenu1.setText("                Items Managment                ");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("                About                ");
+        jMenuBar1.add(jMenu2);
+
+        logout.setText("Log Out");
         logout.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoutMouseClicked(evt);
@@ -99,7 +107,7 @@ public class MMenu extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -174,6 +182,8 @@ public class MMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu logout;

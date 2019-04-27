@@ -2,7 +2,9 @@
 package com.ho.cm.ui;
 
 
+import com.ho.cm.bao.BaoFactory;
 import com.ho.cm.bao.LoginEngine;
+import com.ho.cm.bao.UserBao;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,9 +18,11 @@ public class Main_Core {
 
     Main_Core main_Core = new Main_Core();
 
+
     public static void main(String[] args) {
         String usernameDe = " ";
-
+        UserBao currentUser = new BaoFactory().createUserBao() ; 
+        
         // check if the user logged
         boolean exists = false;
         try {
@@ -58,9 +62,9 @@ public class Main_Core {
                 e.printStackTrace();
             }
 
-            if (LoginEngine.checkUsername(usernameDe)) {
+            if (currentUser.usernameCheck(usernameDe)) {
                 // now we know that login  done successfully so we can pass this user to our system 
-                LoginEngine.currentUser =usernameDe ; 
+              LoginEngine.currentUser = usernameDe ; // pass user static name 
                 MMenu mu = new MMenu();
                 mu.setVisible(true);
             } else {

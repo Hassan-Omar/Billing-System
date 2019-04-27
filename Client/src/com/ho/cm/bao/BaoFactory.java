@@ -4,7 +4,7 @@ package com.ho.cm.bao;
 public class BaoFactory {
     // this factory  to create all business objects wich we need
 
-    public BillBao createBillContentBao() {
+    public BillBao createBillBao() {
         return new BillBaoImp();
     }
 

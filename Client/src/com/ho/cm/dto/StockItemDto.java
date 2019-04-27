@@ -2,7 +2,32 @@ package com.ho.cm.dto;
 
 
 public class StockItemDto {
-   private int currentNumber , id ;
+    public void setSoldNum(int soldNum) {
+        this.soldNum = soldNum;
+    }
+
+    public int getSoldNum() {
+        return soldNum;
+    }
+    private int currentNumber, id, soldNum;
+    private float price;
+    private String name;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public float getPrice() {
+        return price;
+    }
 
     public void setCurrentNumber(int currentNumber) {
         this.currentNumber = currentNumber;
