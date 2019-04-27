@@ -47,10 +47,7 @@ public class BillPanel extends javax.swing.JPanel {
         billTable.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         billTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Customer Name", "Customer Phone", "Bill Date", "Bill ID"
@@ -66,6 +63,10 @@ public class BillPanel extends javax.swing.JPanel {
         });
         billTable.setRowHeight(23);
         jScrollPane1.setViewportView(billTable);
+        billTable.getColumnModel().getColumn(0).setHeaderValue("Customer Name");
+        billTable.getColumnModel().getColumn(1).setHeaderValue("Customer Phone");
+        billTable.getColumnModel().getColumn(2).setHeaderValue("Bill Date");
+        billTable.getColumnModel().getColumn(3).setHeaderValue("Bill ID");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

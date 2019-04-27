@@ -75,6 +75,11 @@ public class MMenu extends javax.swing.JFrame {
         jMenuBar1.add(userQuickSearch);
 
         jMenu1.setText("                Items Managment                ");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("                About                ");
@@ -145,6 +150,11 @@ public class MMenu extends javax.swing.JFrame {
 
      
     }//GEN-LAST:event_userQuickSearchMouseClicked
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+   
+    switchtoPanel(new ItemsScreen());
+    }//GEN-LAST:event_jMenu1MouseClicked
 
     /**
      * @param args the command line arguments
