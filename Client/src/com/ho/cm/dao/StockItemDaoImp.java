@@ -26,7 +26,7 @@ public class StockItemDaoImp implements StockItemDao {
 
             jdbc.setFloat(1, item.getPrice()); // set the item price
             jdbc.setInt(2, item.getCurrentNumber()); // set the available number of items
-
+            jdbc.setString(3, item.getName());
             jdbc.execute();
             return true;
         } catch (SQLException e) {
@@ -44,8 +44,9 @@ public class StockItemDaoImp implements StockItemDao {
             jdbc.setUrl(ConnectionFactory.getUrl());
             jdbc.setUsername(ConnectionFactory.getUsername());
             jdbc.setPassword(ConnectionFactory.getPassword());
-            jdbc.setString(1, '%' + itemName.toLowerCase().trim() + '%');
             jdbc.setCommand(Queries.SEARCH_ITEM);
+            jdbc.setString(1, '%' + itemName.toLowerCase().trim() + '%');
+            
             jdbc.execute();
 
             while (jdbc.next()) {
@@ -55,7 +56,7 @@ public class StockItemDaoImp implements StockItemDao {
                 item.setId(jdbc.getInt(1));
                 item.setPrice(jdbc.getFloat(2));
                 item.setCurrentNumber(jdbc.getInt(3));
-
+                item.setName(jdbc.getString(4));
                 items.add(item);
 
             }
@@ -72,8 +73,8 @@ public class StockItemDaoImp implements StockItemDao {
             jdbc.setUrl(ConnectionFactory.getUrl());
             jdbc.setUsername(ConnectionFactory.getUsername());
             jdbc.setPassword(ConnectionFactory.getPassword());
-            jdbc.setInt(1, itemlId);
             jdbc.setCommand(Queries.DELETE_ITEM);
+            jdbc.setInt(1, itemlId);
             jdbc.execute();
             return true;
         } catch (SQLException e) {

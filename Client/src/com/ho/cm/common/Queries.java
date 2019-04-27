@@ -44,7 +44,7 @@ public class Queries {
 
     public static final String DELETE_ITEM = "DELETE FROM ITEM WHERE ID = ?";
 
-    public static final String SEARCH_ITEM = "SELECT * FROM BILL WHERE LOWER(ITEM_NAME) LIKE ?";
+    public static final String SEARCH_ITEM = "SELECT * FROM ITEM WHERE LOWER(ITEM_NAME) LIKE ?";
     
     public static final String GET_ALL_ITEMS  ="SELECT * FROM ITEM" ;
     

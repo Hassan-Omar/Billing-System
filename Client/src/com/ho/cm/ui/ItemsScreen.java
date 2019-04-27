@@ -47,7 +47,7 @@ public class ItemsScreen extends javax.swing.JPanel {
         deleteBtn = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         insertUpdatePanel = new javax.swing.JPanel();
-        availavlenum = new javax.swing.JTextField();
+        availableNum = new javax.swing.JTextField();
         price = new javax.swing.JTextField();
         nameOfItem = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -155,6 +155,11 @@ public class ItemsScreen extends javax.swing.JPanel {
 
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton3.setText("Update");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -216,7 +221,7 @@ public class ItemsScreen extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(insertUpdatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(price, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                            .addComponent(availavlenum)))
+                            .addComponent(availableNum)))
                     .addGroup(insertUpdatePanelLayout.createSequentialGroup()
                         .addGap(101, 101, 101)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -231,7 +236,7 @@ public class ItemsScreen extends javax.swing.JPanel {
             .addGroup(insertUpdatePanelLayout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addGroup(insertUpdatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(availavlenum, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(availableNum, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(53, 53, 53)
                 .addGroup(insertUpdatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -285,14 +290,23 @@ public class ItemsScreen extends javax.swing.JPanel {
     }//GEN-LAST:event_itemsComboMouseExited
 
     private void saveBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveBtnMouseClicked
-     
+     StockItemDto item = new StockItemDto () ;
+     item.setCurrentNumber(Integer.parseInt(availableNum.getText()));
+     item.setName(nameOfItem.getText());
+     item.setPrice(Float.parseFloat(price.getText()));
+   if (  StockItemBaoObj.saveStockItem(item))
+   {JOptionPane.showMessageDialog(this, "Done"); itemTableReset(StockItemBaoObj.allItem());}
+   else 
+        JOptionPane.showMessageDialog(this, "can't Save");
     }//GEN-LAST:event_saveBtnMouseClicked
 
     private void deleteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteBtnMouseClicked
+      boolean status =false ; 
         if(itemTable.getSelectedRow()>=0)
-        {StockItemBaoObj.deleteItem(Integer.parseInt(itemTable.getValueAt(itemTable.getSelectedRow(), 3).toString()));}
+        {status = StockItemBaoObj.deleteItem(Integer.parseInt(itemTable.getValueAt(itemTable.getSelectedRow(), 3).toString()));}
         else JOptionPane.showMessageDialog(this, "you should select an item to delete");
-        
+        if(status)
+        {JOptionPane.showMessageDialog(this, "deleted"); itemTableReset(StockItemBaoObj.allItem());  }
     }//GEN-LAST:event_deleteBtnMouseClicked
 
     private void searchBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchBtnMouseClicked
@@ -301,9 +315,16 @@ public class ItemsScreen extends javax.swing.JPanel {
        else JOptionPane.showMessageDialog(this , "Enter an item name tp search ") ;
     }//GEN-LAST:event_searchBtnMouseClicked
 
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+            // passing data from the table to text fields                                 
+    nameOfItem.setText(itemTable.getValueAt(itemTable.getSelectedRow(), 0).toString()); // passing item name 
+      availableNum.setText(itemTable.getValueAt(itemTable.getSelectedRow(), 1).toString()); 
+        price.setText(itemTable.getValueAt(itemTable.getSelectedRow(), 2).toString()); 
+    }//GEN-LAST:event_jButton3MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField availavlenum;
+    private javax.swing.JTextField availableNum;
     private javax.swing.JButton deleteBtn;
     private javax.swing.JPanel insertUpdatePanel;
     private javax.swing.JTextField itemName;
