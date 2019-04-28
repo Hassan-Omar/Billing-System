@@ -3,6 +3,7 @@ package com.ho.cm.dao;
 import com.ho.cm.common.ConnectionFactory;
 import com.ho.cm.common.Queries;
 import com.ho.cm.dto.BillDto;
+import com.ho.cm.dto.BillRowDto;
 
 import java.sql.SQLException;
 
@@ -19,7 +20,7 @@ public class BillDaoImp implements BillDao {
 
 
     @Override
-    public boolean saveBillRows(BillDto bill) {
+    public boolean saveBill(BillDto bill) {
 
 
         try (JdbcRowSet jdbc = RowSetProvider.newFactory().createJdbcRowSet()) {
@@ -29,39 +30,21 @@ public class BillDaoImp implements BillDao {
             jdbc.setCommand(Queries.INSERT_BILL);
 
             jdbc.setString(1, bill.getCustomerName()); // set customer full name
-            jdbc.setString(2, bill.getCustomerPhone()); // set phon number 
-            
-            // set the bill date 
+            jdbc.setString(2, bill.getCustomerPhone()); // set phon number
+
+            // set the bill date
             if (bill.getBillDate() != null)
-                            jdbc.setDate(3, new java.sql.Date(bill.getBillDate().getTime()));
-                        else
-                            jdbc.setNull(3, java.sql.Types.DATE);
-            
+                jdbc.setDate(3, new java.sql.Date(bill.getBillDate().getTime()));
+            else
+                jdbc.setNull(3, java.sql.Types.DATE);
+
             jdbc.execute();
-            
-            
-            
-            
-            int billID = 0 ; // ?????
-            
-            for(int i=0 ; i<bill.getBillRows().size() ; i++)
-            {
-            jdbc.setUrl(ConnectionFactory.getUrl());
-            jdbc.setUsername(ConnectionFactory.getUsername());
-            jdbc.setPassword(ConnectionFactory.getPassword());
-            jdbc.setCommand(Queries.INSERT_BILL_CONTENT);
-            // get the current id 
-            
-            jdbc.setString(2,bill.getBillRows().get(i).toString()) ; // ITEM_NAME
-            jdbc.setInt(3,billID); // BILL_ID
-            
-            jdbc.execute();
-            }
-            return true; 
+            return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-  
+
 
         return false;
     }
@@ -75,19 +58,19 @@ public class BillDaoImp implements BillDao {
             jdbc.setUsername(ConnectionFactory.getUsername());
             jdbc.setPassword(ConnectionFactory.getPassword());
             jdbc.setCommand(Queries.SEARCH_BILL);
-            jdbc.setString(1,"%"+customerName.toLowerCase().trim()+"%");
-            
+            jdbc.setString(1, "%" + customerName.toLowerCase().trim() + "%");
+
             jdbc.execute();
 
             while (jdbc.next()) {
                 if (bills == null)
-               bills = new ArrayList<>();
+                    bills = new ArrayList<>();
                 BillDto bill = new BillDto();
-                
+
                 bill.setBillID(jdbc.getInt(1));
                 bill.setCustomerName(jdbc.getString(2));
                 bill.setCustomerPhone(jdbc.getString(3));
-                
+
                 //bill.setBillDate(jdbc.getDate(4));
                 bills.add(bill);
 
@@ -127,12 +110,12 @@ public class BillDaoImp implements BillDao {
 
             while (jdbc.next()) {
                 if (bills == null)
-                bills = new ArrayList<>();
+                    bills = new ArrayList<>();
                 BillDto bill = new BillDto();
                 bill.setBillID(jdbc.getInt(1));
                 bill.setCustomerName(jdbc.getString(2));
                 bill.setCustomerPhone(jdbc.getString(3));
-               // bill.setBillDate(new java.sql.Date(jdbc.getDate(4).getTime()));
+                // bill.setBillDate(new java.sql.Date(jdbc.getDate(4).getTime()));
                 bills.add(bill);
 
             }
@@ -142,4 +125,64 @@ public class BillDaoImp implements BillDao {
 
         return bills;
     }
+
+    @Override
+    public boolean saveRow(BillRowDto row, int billID) {
+
+        try (JdbcRowSet jdbc = RowSetProvider.newFactory().createJdbcRowSet()) {
+            jdbc.setUrl(ConnectionFactory.getUrl());
+            jdbc.setUsername(ConnectionFactory.getUsername());
+            jdbc.setPassword(ConnectionFactory.getPassword());
+            jdbc.setCommand(Queries.SAVE_ROW);
+
+            jdbc.setString(1, row.getItemName());
+            jdbc.setInt(3, row.getNumberofItemes());
+            jdbc.setInt(2, billID);
+            jdbc.execute();
+
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
+    @Override
+    public BillDto viewBill(int billId) {
+        BillDto bill = new BillDto();
+        List<BillRowDto> rows = new ArrayList();
+        try (JdbcRowSet jdbc = RowSetProvider.newFactory().createJdbcRowSet()) {
+            jdbc.setUrl(ConnectionFactory.getUrl());
+            jdbc.setUsername(ConnectionFactory.getUsername());
+            jdbc.setPassword(ConnectionFactory.getPassword());
+            jdbc.setCommand(Queries.VIEW_BILL);
+            jdbc.setInt(1, billId); 
+            jdbc.setInt(2, billId); 
+            jdbc.execute();
+
+
+            while (jdbc.next()) {
+                bill.setCustomerName(jdbc.getString(2));
+                bill.setCustomerPhone(jdbc.getString(3));
+              
+                //bill.setBillDate(jdbc.getDate(4));
+                BillRowDto row = new BillRowDto();
+                row.setItemName(jdbc.getString(6));
+                row.setNumberofItemes(jdbc.getInt(8));
+                
+                rows.add(row);
+            }
+            bill.setBillRows(rows);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return bill;
+
+    }
+
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BillBao {
     // save the bill content 
-    public boolean saveBillRows(BillDto bill);
+    public boolean saveBill(BillDto bill);
     
     // searching for a bill by the customer name 
     public List<BillDto> searchBill(String customerName);
@@ -16,4 +16,8 @@ public interface BillBao {
     
     // list All bills 
     public List<BillDto> getAllBills();
+    
+    
+    // view bill
+    public BillDto viewBill(int billId);
 }

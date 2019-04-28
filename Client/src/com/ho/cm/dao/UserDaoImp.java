@@ -15,7 +15,7 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public boolean passwordChecke(String password) {
+    public boolean passwordChecke(String  password) {
 
         try (JdbcRowSet jdbc = RowSetProvider.newFactory().createJdbcRowSet()) {
             jdbc.setUrl(ConnectionFactory.getUrl());
@@ -24,11 +24,12 @@ public class UserDaoImp implements UserDao {
             jdbc.setCommand(Queries.PASSWORD_CHECK);
             jdbc.setString(1, password);
             jdbc.execute();
-            if (jdbc.next()) {
-                return true;
-            } else {
-                return false;
-            }
+            
+            while (jdbc.next()){
+             return true ; 
+                }
+            System.out.println( " in pass    "+password);
+           
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -45,11 +46,12 @@ public class UserDaoImp implements UserDao {
             jdbc.setCommand(Queries.USERNAME_CHECK);
             jdbc.setString(1, username);
             jdbc.execute();
-            if (jdbc.next()) {
-                return true;
-            } else {
-                return false;
-            }
+          
+            while (jdbc.next()){
+             return true ; 
+                }
+           
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }

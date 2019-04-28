@@ -5,7 +5,7 @@ import com.ho.cm.bao.BaoFactory;
 import com.ho.cm.bao.BillBao;
 import com.ho.cm.bao.StockItemBao;
 import com.ho.cm.dto.BillDto;
-import com.ho.cm.dto.BillRowsDto;
+import com.ho.cm.dto.BillRowDto;
 import com.ho.cm.dto.StockItemDto;
 
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,11 +21,12 @@ import javax.swing.JOptionPane;
  */
 public class InsertNewBill extends javax.swing.JPanel {
 
+
+    BillBao BillBaoObject = new BaoFactory().createBillBao();
+    StockItemBao StockItemBaoObj = new BaoFactory().createStockItemBao();
+    List<StockItemDto> allItems = StockItemBaoObj.allItem();
+
     /** Creates new form InsertNewBill */
-    BillBao BillContentBaoObject = new BaoFactory().createBillBao();
-    StockItemBao StockItemBaoObj  =new BaoFactory().createStockItemBao();
-    List<StockItemDto> allItems =StockItemBaoObj.allItem();
-  
     public InsertNewBill() {
         initComponents();
         listcombo(allItems);
@@ -51,11 +53,17 @@ public class InsertNewBill extends javax.swing.JPanel {
         totalLabel = new javax.swing.JLabel();
         saveBtn = new javax.swing.JButton();
         itemsNameCombo = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
+        moveRowBtn = new javax.swing.JButton();
         pricesCombo = new javax.swing.JComboBox();
+        countCombo = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Customer Name");
+
+        customeName.setFont(new java.awt.Font("Tekton Pro", 1, 18)); // NOI18N
 
         customerPhone.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         customerPhone.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -119,6 +127,9 @@ public class InsertNewBill extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(billContTable);
+        billContTable.getColumnModel().getColumn(0).setHeaderValue("Item Name");
+        billContTable.getColumnModel().getColumn(1).setHeaderValue("Number of Item");
+        billContTable.getColumnModel().getColumn(2).setHeaderValue("Price per Item");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -131,10 +142,7 @@ public class InsertNewBill extends javax.swing.JPanel {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         totalLabel.setFont(new java.awt.Font("Tekton Pro Ext", 1, 36)); // NOI18N
@@ -177,30 +185,50 @@ public class InsertNewBill extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jButton1.setText("+");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        moveRowBtn.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        moveRowBtn.setText("+");
+        moveRowBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                moveRowBtnMouseClicked(evt);
             }
         });
 
         pricesCombo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         pricesCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Prices" }));
 
+        countCombo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        countCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Current Available" }));
+
+        jLabel3.setFont(new java.awt.Font("Tekton Pro Ext", 1, 24)); // NOI18N
+        jLabel3.setText("Items Name ");
+
+        jLabel4.setFont(new java.awt.Font("Tekton Pro Ext", 1, 24)); // NOI18N
+        jLabel4.setText("Price");
+
+        jLabel5.setFont(new java.awt.Font("Tekton Pro Ext", 1, 24)); // NOI18N
+        jLabel5.setText("Current No");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(moveRowBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(itemsNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(pricesCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(itemsNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pricesCombo, 0, 169, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(countCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 779, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -215,17 +243,23 @@ public class InsertNewBill extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(58, 58, 58)
+                        .addComponent(moveRowBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(13, 13, 13)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(itemsNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pricesCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(countCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pricesCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(itemsNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)))
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(136, 136, 136))
         );
@@ -240,10 +274,10 @@ public class InsertNewBill extends javax.swing.JPanel {
         bill.setCustomerPhone(customerPhone.getText()); // passing customer phone
         bill.setCustomerName(customeName.getText()); // passing customer full name
         // call method to save the billContTableRead returned value in the table
- 
+
         bill.setBillRows(billContTableRead()); // passing  table data
 
-        if (BillContentBaoObject.saveBillRows(bill))
+        if (BillBaoObject.saveBill(bill))
             JOptionPane.showMessageDialog(this, "Successfully Saving");
         else
             JOptionPane.showMessageDialog(this, "there are an error");
@@ -267,7 +301,7 @@ public class InsertNewBill extends javax.swing.JPanel {
     }//GEN-LAST:event_itemsComboMouseExited
 
     private void billContTableMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billContTableMouseExited
-        List<BillRowsDto> bills = billContTableRead();
+        List<BillRowDto> bills = billContTableRead();
         float total = 0f;
         if (bills != null) {
             try {
@@ -287,34 +321,34 @@ public class InsertNewBill extends javax.swing.JPanel {
  
     }//GEN-LAST:event_billContTableMouseExited
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-   
-  
-    moveItemes(allItems);
-   
-   
+    private void moveRowBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_moveRowBtnMouseClicked
+        synCombo();
+        moveItemes();
        
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_moveRowBtnMouseClicked
 
     private void itemsNameComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemsNameComboActionPerformed
-      pricesCombo.setSelectedIndex(itemsNameCombo.getSelectedIndex());
-      
+        synCombo();
       
     }//GEN-LAST:event_itemsNameComboActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable billContTable;
+    private javax.swing.JComboBox countCombo;
     private javax.swing.JTextField customeName;
     private javax.swing.JTextField customerPhone;
     private javax.swing.JComboBox itemsNameCombo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton moveRowBtn;
     private javax.swing.JLabel phoneErrorLabel;
     private javax.swing.JComboBox pricesCombo;
     private javax.swing.JButton saveBtn;
@@ -322,13 +356,13 @@ public class InsertNewBill extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
 
-
-    public List<BillRowsDto> billContTableRead() {
-        List<BillRowsDto> billRows = new ArrayList<>();
+    // this method read the rows
+    public List<BillRowDto> billContTableRead() {
+        List<BillRowDto> billRows = new ArrayList<>();
         try {
-
+            // loop on rows and collect data
             for (int i = 0; i < billContTable.getRowCount(); i++) {
-                BillRowsDto billRow = new BillRowsDto();
+                BillRowDto billRow = new BillRowDto();
                 billRow.setItemName(billContTable.getValueAt(i, 0).toString()); // get col 1 as string
                 billRow.setNumberofItemes(Integer.parseInt(billContTable.getValueAt(i,
                                                                                     1).toString())); // pass col 2 as integer value
@@ -346,39 +380,35 @@ public class InsertNewBill extends javax.swing.JPanel {
         return billRows;
     }
 
+    // this method to make a list in our combo box
     void listcombo(List<StockItemDto> list) {
         for (int i = 0; i < list.size(); i++) {
-            itemsNameCombo.addItem(list.get(i).getName());
-            pricesCombo.addItem(list.get(i).getPrice());
+            // check that available number is > 0
+            if (list.get(i).getId() > 0) {
+                itemsNameCombo.addItem(list.get(i).getName());
+                pricesCombo.addItem(list.get(i).getPrice());
+                countCombo.addItem(list.get(i).getCurrentNumber());
+
+            }
         }
 
     }
 
-    void moveItemes(List<StockItemDto> list) {
-        Object itemsInCombo = itemsNameCombo.getSelectedItem() ;
-        int index = itemsNameCombo.getSelectedIndex();
-        
-       //=====================================================
-        //Object[][] itemArr = new Object[billContTable.getRowCount()+1][3];
-        // loop on the table to collect old data ; 
-        // this part is not good i should use Table.addRow(row) 
-        /* for (int i = 0; i <billContTable.getRowCount() ; i++) {
-            itemArr[i][0] = billContTable.getValueAt(i, 0);
-            itemArr[i][1] = billContTable.getValueAt(i, 1);
-            itemArr[i][2] = billContTable.getValueAt(i, 2);
-        }
-        itemArr[billContTable.getRowCount()+1][0] =itemsInCombo ;
-        billContTable.setModel(new javax.swing.table.DefaultTableModel(itemArr, new String[] {
-                                                                       "Item Name", "Number of Items ", "Price"
-            })); */
-        //=====================================================
-        
-        
-        
-       // add this item to table 
-       // selected index +1 ------> same index in the allItem list
-       list.get(index).getPrice();
-        
+    void moveItemes() {
+        // this method add a new row to the table
+        if (itemsNameCombo.getSelectedIndex() > 0)
+
+        {
+            DefaultTableModel model = (DefaultTableModel) billContTable.getModel();
+            model.addRow(new Object[] { itemsNameCombo.getSelectedItem(), "1", pricesCombo.getSelectedItem() });
+        } else
+            JOptionPane.showMessageDialog(this, "please choose an item to add ");
+    }
+
+    void synCombo() {
+        pricesCombo.setSelectedIndex(itemsNameCombo.getSelectedIndex());
+        countCombo.setSelectedIndex(itemsNameCombo.getSelectedIndex());
+
     }
 }
 

@@ -17,4 +17,6 @@ public interface StockItemBao {
     // list  all itemes stored in our system 
     public List<StockItemDto> allItem();
     
+    // update the item content like price and each available number 
+    public boolean updateStockItem(StockItemDto item);
 }

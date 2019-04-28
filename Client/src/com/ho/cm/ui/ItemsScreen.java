@@ -16,15 +16,17 @@ import javax.swing.JOptionPane;
  */
 public class ItemsScreen extends javax.swing.JPanel {
 
-    /** Creates new form InsertNewBill */
+    // create bussiness objects
     BillBao BillContentBaoObject = new BaoFactory().createBillBao();
-    StockItemBao StockItemBaoObj  =new BaoFactory().createStockItemBao();
-    List<StockItemDto> allItems =StockItemBaoObj.allItem();
-  
+    StockItemBao StockItemBaoObj = new BaoFactory().createStockItemBao();
+    List<StockItemDto> allItems = StockItemBaoObj.allItem();
+    boolean updateFlag = false; // this to hold update or insert new status
+
+    /** Creates new form InsertNewBill */
     public ItemsScreen() {
         initComponents();
-    if(allItems!=null)
-        itemTableReset(allItems);
+        if (allItems != null)
+            itemTableReset(allItems);
     }
 
     /** This method is called from within the constructor to
@@ -45,7 +47,7 @@ public class ItemsScreen extends javax.swing.JPanel {
         itemTable = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         deleteBtn = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        updateBtn = new javax.swing.JButton();
         insertUpdatePanel = new javax.swing.JPanel();
         availableNum = new javax.swing.JTextField();
         price = new javax.swing.JTextField();
@@ -153,11 +155,11 @@ public class ItemsScreen extends javax.swing.JPanel {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton3.setText("Update");
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+        updateBtn.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        updateBtn.setText("Update");
+        updateBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton3MouseClicked(evt);
+                updateBtnMouseClicked(evt);
             }
         });
 
@@ -167,7 +169,7 @@ public class ItemsScreen extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(127, 127, 127)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(171, 171, 171))
@@ -178,7 +180,7 @@ public class ItemsScreen extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -290,37 +292,63 @@ public class ItemsScreen extends javax.swing.JPanel {
     }//GEN-LAST:event_itemsComboMouseExited
 
     private void saveBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveBtnMouseClicked
-     StockItemDto item = new StockItemDto () ;
-     item.setCurrentNumber(Integer.parseInt(availableNum.getText()));
-     item.setName(nameOfItem.getText());
-     item.setPrice(Float.parseFloat(price.getText()));
-   if (  StockItemBaoObj.saveStockItem(item))
-   {JOptionPane.showMessageDialog(this, "Done"); itemTableReset(StockItemBaoObj.allItem());}
-   else 
-        JOptionPane.showMessageDialog(this, "can't Save");
+        StockItemDto item = new StockItemDto();
+        item.setCurrentNumber(Integer.parseInt(availableNum.getText()));
+        item.setName(nameOfItem.getText());
+        item.setPrice(Float.parseFloat(price.getText()));
+        if (updateFlag) {
+            if (itemTable.getSelectedRow() >= 0) {
+                item.setId(Integer.parseInt(itemTable.getValueAt(itemTable.getSelectedRow(),
+                                                                 3).toString())); //passing id
+
+                updateFlag = false; // inverse status to false
+                if (StockItemBaoObj.updateStockItem(item)) {
+                    JOptionPane.showMessageDialog(this, "Done");
+                    itemTableReset(StockItemBaoObj.allItem());
+                } else
+                    JOptionPane.showMessageDialog(this, "Can't Update");
+            }
+        } else {
+            if (StockItemBaoObj.saveStockItem(item)) {
+                JOptionPane.showMessageDialog(this, "Done");
+                itemTableReset(StockItemBaoObj.allItem());
+            } else
+                JOptionPane.showMessageDialog(this, "can't Save");
+        }
     }//GEN-LAST:event_saveBtnMouseClicked
 
     private void deleteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteBtnMouseClicked
-      boolean status =false ; 
-        if(itemTable.getSelectedRow()>=0)
-        {status = StockItemBaoObj.deleteItem(Integer.parseInt(itemTable.getValueAt(itemTable.getSelectedRow(), 3).toString()));}
-        else JOptionPane.showMessageDialog(this, "you should select an item to delete");
-        if(status)
-        {JOptionPane.showMessageDialog(this, "deleted"); itemTableReset(StockItemBaoObj.allItem());  }
+        boolean status = false; // hold status of deleting
+        if (itemTable.getSelectedRow() >=
+            0) {
+            // calling delete and passing item's id
+            status =
+                              StockItemBaoObj.deleteItem(Integer.parseInt(itemTable.getValueAt(itemTable.getSelectedRow(),
+                                                                                               3).toString()));
+        } else
+            JOptionPane.showMessageDialog(this, "you should select an item to delete");
+        if (status) {
+            JOptionPane.showMessageDialog(this, "deleted");
+            itemTableReset(StockItemBaoObj.allItem());
+        }
     }//GEN-LAST:event_deleteBtnMouseClicked
 
     private void searchBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchBtnMouseClicked
-     if(   itemName.getText()!= null)  
-    itemTableReset( StockItemBaoObj.searchItem(itemName.getText()));
-       else JOptionPane.showMessageDialog(this , "Enter an item name tp search ") ;
+        if (itemName.getText() != null)
+            itemTableReset(StockItemBaoObj.searchItem(itemName.getText()));
+        else
+            JOptionPane.showMessageDialog(this, "Enter an item name tp search ");
     }//GEN-LAST:event_searchBtnMouseClicked
 
-    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-            // passing data from the table to text fields                                 
-    nameOfItem.setText(itemTable.getValueAt(itemTable.getSelectedRow(), 0).toString()); // passing item name 
-      availableNum.setText(itemTable.getValueAt(itemTable.getSelectedRow(), 1).toString()); 
-        price.setText(itemTable.getValueAt(itemTable.getSelectedRow(), 2).toString()); 
-    }//GEN-LAST:event_jButton3MouseClicked
+    private void updateBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateBtnMouseClicked
+        if (itemTable.getSelectedRow() > 0) { // passing data from the table to text fields
+            nameOfItem.setText(itemTable.getValueAt(itemTable.getSelectedRow(), 0).toString()); // passing item name
+            availableNum.setText(itemTable.getValueAt(itemTable.getSelectedRow(), 1).toString());
+            price.setText(itemTable.getValueAt(itemTable.getSelectedRow(), 2).toString());
+            updateFlag = true;
+        } else
+            JOptionPane.showMessageDialog(this, "You should select an item to update ");
+    }//GEN-LAST:event_updateBtnMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -329,7 +357,6 @@ public class ItemsScreen extends javax.swing.JPanel {
     private javax.swing.JPanel insertUpdatePanel;
     private javax.swing.JTextField itemName;
     private javax.swing.JTable itemTable;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -343,6 +370,7 @@ public class ItemsScreen extends javax.swing.JPanel {
     private javax.swing.JTextField price;
     private javax.swing.JButton saveBtn;
     private javax.swing.JButton searchBtn;
+    private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables
 
 
@@ -357,12 +385,11 @@ public class ItemsScreen extends javax.swing.JPanel {
             itemArr[i][3] = items.get(i).getId();
         }
         itemTable.setModel(new javax.swing.table.DefaultTableModel(itemArr, new String[] {
-                                                                   "Item Name", "Current Available ", "Price",
-                                                                   "ID"
+                                                                   "Item Name", "Current Available ", "Price", "ID"
             }));
     }
 
- 
+
 }
 
 

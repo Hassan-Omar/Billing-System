@@ -1,7 +1,7 @@
 package com.ho.cm.dto;
 
 
-public class BillRowsDto {
+public class BillRowDto {
    
     private String itemName  ;
     private int numberofItemes;

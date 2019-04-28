@@ -13,6 +13,8 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author h.omar
@@ -118,7 +120,8 @@ public class Login extends javax.swing.JFrame {
     private void login_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_login_btnMouseClicked
         boolean usernamStatus = user.usernameCheck(username.getText()); // passing username to check
         boolean passwordStatus =
-            user.passwordChecke(userPassword.getPassword().toString()); // passing password to check
+            user.passwordChecke(new String(userPassword.getPassword())); // passing password to check
+
 
         if (jCheckBox1.isSelected()) // this means i must store this values
 
@@ -151,6 +154,9 @@ public class Login extends javax.swing.JFrame {
                 } catch (Throwable e) {
                 }
             }
+
+            else
+                JOptionPane.showMessageDialog(this, "Password or Username Not matched");
         }
 
         if ((usernamStatus) && (passwordStatus)) {

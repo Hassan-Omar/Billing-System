@@ -64,7 +64,7 @@ public class Main_Core {
 
             if (currentUser.usernameCheck(usernameDe)) {
                 // now we know that login  done successfully so we can pass this user to our system 
-              LoginEngine.currentUser = usernameDe ; // pass user static name 
+                LoginEngine.currentUser = usernameDe ; // pass user static name 
                 MMenu mu = new MMenu();
                 mu.setVisible(true);
             } else {

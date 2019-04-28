@@ -10,15 +10,14 @@ public class UserBaoImp implements UserBao {
     @Override
     public boolean passwordChecke(String pass) {
 
-       // return userDaoObj.passwordChecke(pass);
-        return true ;
+        return userDaoObj.passwordChecke(pass);
+       
     }
 
     @Override
     public boolean usernameCheck(String username) {
 
-        // return userDaoObj.usernameCheck(username);
-        return true ;
+        return userDaoObj.usernameCheck(username);
     }
 
     @Override

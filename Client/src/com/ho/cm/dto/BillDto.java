@@ -5,8 +5,11 @@ import java.util.List;
 
 
 public class BillDto {
-    private String customerName, customerPhone;
+    private String customerName, customerPhone ;
     private Date billDate;
+
+    
+    
     private int billID;
 
     public void setBillID(int billID) {
@@ -16,7 +19,7 @@ public class BillDto {
     public int getBillID() {
         return billID;
     }
-    private List<BillRowsDto> billRows;
+    private List<BillRowDto> billRows;
 
     public void setCustomerPhone(String customerPhone) {
         this.customerPhone = customerPhone;
@@ -43,11 +46,11 @@ public class BillDto {
         return billDate;
     }
 
-    public void setBillRows(List<BillRowsDto> billRows) {
+    public void setBillRows(List<BillRowDto> billRows) {
         this.billRows = billRows;
     }
 
-    public List<BillRowsDto> getBillRows() {
+    public List<BillRowDto> getBillRows() {
         return billRows;
     }
 
