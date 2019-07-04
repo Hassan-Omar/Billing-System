@@ -165,8 +165,12 @@ public class MMenu extends javax.swing.JFrame {
             File file = new File("ab.txt");
 
             if (file.delete()) { 
-                //  exit and close the programm
-                System.exit(0);
+                            
+                // initialize login frame and make it visible
+                Login log = new Login() ; 
+                log.setVisible(true) ;
+                // dispose the curren farm
+                dispose();
             }
         } catch (Exception e) {
             e.printStackTrace();
